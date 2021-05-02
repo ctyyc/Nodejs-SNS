@@ -3,9 +3,11 @@ var router = express.Router();
 
 var passport = require('passport');
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+var googleCredentials = require('../config/google.json');
 
 var mongoose = require('mongoose');
-var db = mongoose.connect('Atlas 주소 입력', { useNewUrlParser: true });
+var dbInfo = require('../config/mongodb.json');
+var db = mongoose.connect(dbInfo.connectInfo, { useNewUrlParser: true });
 var Schema = mongoose.Schema;
 
 var Post = new Schema({
@@ -174,8 +176,8 @@ passport.deserializeUser(function(obj, done) {
 });
 
 passport.use(new GoogleStrategy({
-		clientID: "클라이언트 ID 입력",
-		clientSecret: "클라이언트 보안 비밀 입력",
+		clientID: googleCredentials.web.client_id,
+		clientSecret: googleCredentials.web.client_secret,
 		callbackURL: "/auth/google/callback"
 	}, 
 	function(accessToken, refreshToken, profile, done) {

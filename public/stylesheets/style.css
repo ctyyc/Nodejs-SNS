@@ -59,6 +59,7 @@ a {
 
 .right {
 	float: right;
+  width: 650px;
 }
 
 #message .photo {
@@ -116,11 +117,12 @@ a {
 
 #wall .input_comment {
 	margin-top: 5px;
-	width: 560px;
+	width: 540px;
 }
 
-#wall .input_comment input .comment_button {
-	width: 80px;
+#wall .comment_button {
+  font-size: 5px;
+	width: 65px;
 }
 
 #wall .photo_thumb {
@@ -133,7 +135,7 @@ a {
 }
 
 #wall .author {
-	width: 665px;
+	width: 650px;
 	padding: 5px;
 	border-top: 1px solid #ccc;
 	border-right: 1px solid #ccc;
@@ -153,14 +155,13 @@ a {
 }
 
 #wall .contents {
-	width: 665px;
+	width: 650px;
 	padding: 5px;
 	clear: both;
 }
 
 #wall .likes {
-	width: 655px;
-	margin: 5px;
+	width: 650px;
 	border-top: 1px dotted #666;
 	padding: 5px;
 	clear: both;
