@@ -1,16 +1,18 @@
-var timer = null;
-var editing = false;
+let timer 	= null;
+let editing = false;
 
-var load = function() {
+const load = function() {
 	if(!editing){
 		$.get('/load', function (data) {
 			$("#wall").empty();
-			$(data).each(function (i) {
-				var id = this._id;
+			$(data).each(function (idx) {
+				const id = this._id;
+				const authorId = this.author_id;
 				
 				$("#wall").prepend("<div class='item'> <div class='left'></div><div class='right'></div></div>");
 				
 				$("#wall .item:first .left").append("<img class='photo_thumb' src='" + this.picture + "'/>");
+				$("#wall .item:first .left").append("<input type='hidden' id='author_id' value='" + this.author_id + "'/>");
 				$("#wall .item:first .right").append("<div class='author'><b>" + this.author + "</b> (" + this.date + ")&nbsp;&nbsp; <span class='text_button modify'>수정</span> <span class='text_button del'>삭제</span> <span class='text_button like'>좋아요</span></div>");
 				$("#wall .item:first .right").append("<div class='contents " + id + "'>" + this.contents + "</div>");
 				$("#wall .item:first .right").append("<div class='likes'>LIKE : " + this.like + "</div>");
@@ -20,9 +22,7 @@ var load = function() {
 					$("#wall .item:first .right .comments").append("<div class='comment_item'>" + this.author + ": " + this.comment + "</div>");
 				});
 				
-				$("#wall .item:first .comments").append("<input class='input_comment' type='text' /> <input class='comment_button' type='button' value='COMMENT' />");
-				
-				id = this._id;
+				$("#wall .item:first .comments").append("<input class='input_comment' type='text' placeholder='댓글을 입력하세요.' />");
 				
 				$("#wall .item:first .input_comment").on("focus", function() {
 					editing = true;
@@ -43,24 +43,19 @@ var load = function() {
 					}
 				});
 				
-				$("#wall .item:first .comment_button").click(function(evt) {
-					comment($("#wall .item:first .input_comment").val(), id);
-					editing = false;
-				});
-				
-				var cnt = 0;
+				let chk = true;
 				
 				$("#wall .item:first .modify").click(function(evt) {
 					editing = true;
-					if(cnt===0){
-						var contents = $("#wall ." + id).html();
+					if(chk){
+						const contents = $("#wall ." + id).html();
 						$("#wall ." + id).html("<textarea id='textarea_" + id + "' class='textarea_modify'>" + contents + "</textarea>");
-						cnt=1;
+						chk = false;
 					}
 					$("#textarea_" + id).keypress(function(evt) {
 						if((evt.keyCode || evt.which) == 13){
 							if(this.value !== "") {
-								modify(this.value, id);
+								modify(this.value, id, authorId);
 								evt.preventDefault();
 								editing = false;
 							}
@@ -70,7 +65,7 @@ var load = function() {
 				});
 				
 				$("#wall .item:first .del").click(function(evt) {
-					del(id);
+					del(id, authorId);
 				});
 					
 				$("#wall .item:first .like").click(function(evt) {
@@ -83,8 +78,8 @@ var load = function() {
     }
 };
 		
-var write = function(contents) {
-	var postdata = {
+const write = function(contents) {
+	const postdata = {
 		'author' : $("#author").val(),
 		'contents' : contents,
 		'picture' : $("#message").find(".photo").attr('src')
@@ -95,20 +90,24 @@ var write = function(contents) {
 	});
 };
 
-var modify = function(contents, id) {
-	var postdata = {
+const modify = function(contents, id, authorId) {
+	const postdata = {
 		'author' : $("#author").val(),
+		'author_id' : authorId,
 		'contents' : contents,
 		'_id' : id
 	};
 	
-	$.post('/modify', postdata, function() {
+	$.post('/modify', postdata, function(msg) {
+		if(msg.status === 'FAIL') {
+			alert("글 작성자 만 수정 가능합니다.");
+		}
 		load();
 	});
 };
 
-var comment = function(comment, id) {
-	var postdata = {
+const comment = function(comment, id) {
+	const postdata = {
 		'author' : $("#author").val(),
 		'comment' : comment,
 		'_id' : id
@@ -119,18 +118,22 @@ var comment = function(comment, id) {
 	});
 };
 
-var del = function(id) {
-	var postdata = {
-		'_id' : id
+const del = function(id, authorId) {
+	const postdata = {
+		'_id' : id,
+		'author_id' : authorId
 	};
 	
-	$.post('/del', postdata, function() {
+	$.post('/del', postdata, function(msg) {
+		if(msg.status === 'FAIL') {
+			alert("글 작성자 만 삭제 가능합니다.");
+		}
 		load();
 	});
 };
 
-var like = function(id) {
-	var postdata = {
+const like = function(id) {
+	const postdata = {
 		'_id' : id
 	};
 	
@@ -160,7 +163,6 @@ $(document).ready(function (){
 	});
 	
 	$("#write_button").click(function(evt) {
-		console.log($("#message textarea").val());
 		write($("#message textarea").val());
 		$("#message textarea").val("");
 		editing = false;

@@ -28,8 +28,8 @@ a {
 }
 
 #logout_button{
-	background-color: CornflowerBlue;
-	color: white;
+	background-color: darkgray;
+	color: black;
 	font-weight: bold;
 	font-size: large;
 }
@@ -48,7 +48,7 @@ a {
 	padding: 10px;
 	min-height: 100%;
 	text-align: right;
-	background-color: lightskyblue;
+	background-color: steelblue;
 }
 
 .left {
@@ -59,7 +59,7 @@ a {
 
 .right {
 	float: right;
-  width: 650px;
+  	width: 650px;
 }
 
 #message .photo {
@@ -92,10 +92,10 @@ a {
 	margin-bottom: 5px;
 }
 
-#wall {
+/* #wall {
 	border-left: 1px dashed #ccc;
 	border-right: 1px dashed #ccc;
-}
+} */
 
 #wall .item {
 	margin: 10px;
@@ -104,7 +104,9 @@ a {
 }
 
 #wall .comments {
-	margin: 10px;
+	width: 650px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 	padding: 5px;
 	border: 1px solid #aaa;
 	background-color: #f8f8f8;
@@ -117,12 +119,7 @@ a {
 
 #wall .input_comment {
 	margin-top: 5px;
-	width: 540px;
-}
-
-#wall .comment_button {
-  font-size: 5px;
-	width: 65px;
+	width: 640px;
 }
 
 #wall .photo_thumb {
@@ -138,7 +135,6 @@ a {
 	width: 650px;
 	padding: 5px;
 	border-top: 1px solid #ccc;
-	border-right: 1px solid #ccc;
 	border-bottom: 1px solid #ccc;
 	background-color: #f8f8f8;
 }
