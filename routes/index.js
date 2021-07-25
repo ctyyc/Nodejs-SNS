@@ -63,7 +63,6 @@ router.post('/write', function(req, res, next) {
 	post.contents 	= contents;
 	post.date 		= date;
 	post.like 		= 0;
-	post.comments 	= [];
 
 	post.save(function (err) {
 		if (err) {
@@ -142,29 +141,6 @@ router.post('/modify', function(req, res, next) {
 		console.log("글 작성자 만 수정 가능합니다.");
 		res.json({status: "FAIL"});
 	}
-});
-
-// 댓글 기능
-router.post('/comment', function(req, res, next) {
-	const _id 		= req.body._id;
-	const author 	= req.body.author;
-	const comment	= req.body.comment;
-	const date 		= Date.now();
-	
-	postModel.findOne({_id: _id}, function(err, post) {
-		if(err){
-			throw err;
-		} else {
-			post.comments.push({author: author, comment: comment, date: date});
-			post.save(function(err) {
-				if(err){
-					throw err;
-				} else {
-					res.json({status: "SUCCESS"});
-				}
-			});
-		}
-	});
 });
 
 // 처음 로그인 시 세션에 저장

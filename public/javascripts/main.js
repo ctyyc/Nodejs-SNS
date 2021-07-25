@@ -16,32 +16,6 @@ const load = function() {
 				$("#wall .item:first .right").append("<div class='author'><b>" + this.author + "</b> (" + this.date + ")&nbsp;&nbsp; <span class='text_button modify'>수정</span> <span class='text_button del'>삭제</span> <span class='text_button like'>좋아요</span></div>");
 				$("#wall .item:first .right").append("<div class='contents " + id + "'>" + this.contents + "</div>");
 				$("#wall .item:first .right").append("<div class='likes'>LIKE : " + this.like + "</div>");
-				$("#wall .item:first .right").append("<div class='comments'></div>");
-				
-				$(this.comments).each(function (j) {
-					$("#wall .item:first .right .comments").append("<div class='comment_item'>" + this.author + ": " + this.comment + "</div>");
-				});
-				
-				$("#wall .item:first .comments").append("<input class='input_comment' type='text' placeholder='댓글을 입력하세요.' />");
-				
-				$("#wall .item:first .input_comment").on("focus", function() {
-					editing = true;
-				});
-				
-				$("#wall .item:first .input_comment").on("blur", function() {
-					editing = false;
-				});
-				
-				$("#wall .item:first .input_comment").keypress(function(evt){
-					if((evt.keyCode || evt.which) == 13){
-						if (this.value !== "") {
-							comment(this.value, id);
-							evt.preventDefault();
-							$(this).val("");
-							editing = false;
-						}
-					}
-				});
 				
 				let chk = true;
 				
@@ -102,18 +76,6 @@ const modify = function(contents, id, authorId) {
 		if(msg.status === 'FAIL') {
 			alert("글 작성자 만 수정 가능합니다.");
 		}
-		load();
-	});
-};
-
-const comment = function(comment, id) {
-	const postdata = {
-		'author' : $("#author").val(),
-		'comment' : comment,
-		'_id' : id
-	};
-	
-	$.post('/comment', postdata, function() {
 		load();
 	});
 };
