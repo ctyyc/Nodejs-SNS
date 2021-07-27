@@ -21,19 +21,25 @@ const load = function() {
 				
 				$("#wall .item:first .modify").click(function(evt) {
 					editing = true;
-					if(chk){
+					if(chk) {
 						const contents = $("#wall ." + id).html();
-						$("#wall ." + id).html("<textarea id='textarea_" + id + "' class='textarea_modify'>" + contents + "</textarea>");
+						$("#wall ." + id).html("<textarea id='textarea_" + id + "' class='textarea_modify'>" + contents + "</textarea><button class='sub_btn'>저장</button>");
 						chk = false;
 					}
 					$("#textarea_" + id).keypress(function(evt) {
-						if((evt.keyCode || evt.which) == 13){
+						if((evt.keyCode || evt.which) == 13) {
 							if(this.value !== "") {
 								modify(this.value, id, authorId);
 								evt.preventDefault();
 								editing = false;
 							}
 						}
+					});
+					$("#wall ." + id + " .sub_btn").click(function(evt) {
+						const val = $("#textarea_" + id).val();
+						modify(val, id, authorId);
+						evt.preventDefault();
+						editing = false;
 					});
 					
 				});

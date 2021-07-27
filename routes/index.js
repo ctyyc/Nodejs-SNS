@@ -17,7 +17,6 @@ const { postModel } = require("./models/Post");
 const check_user = function(req){
 	// 비로그인 유저일때 (초기 접속 시 세션과 로그인 후 로그아웃 한 세션이 다름)
 	if(req.session.passport === undefined || req.session.passport.user === undefined){
-		console.log('로그인이 필요함');
 		return false;
 	} else {  // 로그인 되어 있을때
 		return true;
